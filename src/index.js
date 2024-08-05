@@ -1,12 +1,11 @@
 const canCast = (state) => ({
   cast: (spell, dmgNum) => {
-    `${state.name} casts ${spell} it deals ${dmgNum} damage!`;
     state.mana--;
-    return dmgNum;
+    return [dmgNum, `${state.name} casts ${spell} it deals ${dmgNum} damage!`];
   }
 })
 
-export const canFight = (state) => ({
+const canFight = (state) => ({
   fight: (dmgNum) => {
     state.stamina--;
     return dmgNum;
@@ -22,7 +21,7 @@ export const fighter = (name) => {
   return Object.assign(state, canFight(state));
 }
 
-const mage = (name) => {
+export const mage = (name) => {
   let state = {
     name,
     health: 100,
@@ -30,3 +29,4 @@ const mage = (name) => {
   }
   return Object.assign(state, canCast(state));
 }
+
