@@ -1,5 +1,6 @@
 import { mage } from "../src/index.js"
 import { fighter } from "../src/index.js";
+import { monster } from "../src/index.js";
 
 describe('fighter', () => {
   
@@ -25,7 +26,7 @@ describe('canFight', () => {
 });
 
 describe('mage', () => {
-  test("Should return a mage object state when called", () => {
+  test('Should return a mage object state when called', () => {
     const result = mage("result");
 
     expect(result).toEqual(expect.objectContaining({
@@ -50,5 +51,29 @@ describe('canCast', () => {
     const result = mageTest.cast("Fireball", 15);
     expect(result[0]).toEqual(15);
     expect(typeof result[1]).toEqual("string");
+  });
+});
+
+describe('monster', () => {
+  
+  test('Should return a monster object when called', () => {
+    const result = monster("result", 40);
+
+    console.log(result);
+
+    expect(result).toEqual(expect.objectContaining({
+      name: "result",
+      health: 40
+    }));
+    expect(typeof result.attack).toBe("function");
+  });
+});
+
+describe('monsterAttack', () => {
+
+  test('Should return a dmgNum', () => {
+    const monsterTest = monster("monsterTest");
+    const result = monsterTest.attack(15);
+    expect(result).toEqual(15);
   });
 });

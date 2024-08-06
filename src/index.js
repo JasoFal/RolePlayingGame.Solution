@@ -30,3 +30,17 @@ export const mage = (name) => {
   return Object.assign(state, canCast(state));
 }
 
+const monsterAttack = () => ({
+  attack: (dmg) => {
+    return dmg;
+  }
+});
+
+export const monster = (name, hp) => {
+  let state = {
+    name,
+    health: hp
+  }
+  return Object.assign(state, monsterAttack());
+}
+
