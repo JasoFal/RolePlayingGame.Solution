@@ -1,6 +1,6 @@
-import { mage } from "../src/index.js"
-import { fighter } from "../src/index.js";
-import { monster } from "../src/index.js";
+import { mage } from "../src/js/CharList.js";
+import { fighter } from "../src/js/CharList.js";
+import { monster } from "../src/js/CharList.js";
 
 describe('fighter', () => {
   
@@ -40,10 +40,10 @@ describe('mage', () => {
 
 describe('canCast', () => {
 
-  test('Should decrease mage mana by 1', () => {
+  test('Should subtract spell cost from mana', () => {
     const mageTest = mage("mageTest");
-    mageTest.cast("Fireball", 15);
-    expect(mageTest.mana).toEqual(99);
+    mageTest.cast("Fireball", 15, 10);
+    expect(mageTest.mana).toEqual(90);
   });
 
   test('Should return array with dmgNum and string', () => {
