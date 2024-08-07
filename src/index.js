@@ -1,68 +1,25 @@
 import "./css/styles.css";
-
-const canCast = (state) => ({
-  cast: (spell, dmgNum, manaCost) => {
-    state.mana -= manaCost;
-    return [dmgNum, `${state.name} casts ${spell} it deals ${dmgNum} damage!`];
-  }
-});
-
-const canFight = (state) => ({
-  fight: (dmgNum) => {
-    state.stamina--;
-    return dmgNum;
-  }
-});
-
-const monsterAttack = (state) => ({
-  attack: (dmg) => {
-    console.log(state);
-    return dmg;
-  }
-});
-
-export const fighter = (name) => {
-  let state = {
-    name,
-    health: 100,
-    stamina: 100
-  };
-  return Object.assign(state, canFight(state));
-};
-
-export const mage = (name) => {
-  let state = {
-    name,
-    health: 100,
-    mana: 100
-  };
-  return Object.assign(state, canCast(state));
-};
-
-export const monster = (name, hp) => {
-  let state = {
-    name,
-    health: hp
-  };
-  return Object.assign(state, monsterAttack(state));
-};
+import { mage } from "./js/CharList";
+import { fighter } from "./js/CharList";
+import { monster } from "./js/CharList";
 
 // All combat turns go through here
-function combat(array, skill, dmgNum, resourceCost) {
+function combat(array, skillName, dmgNum, resourceCost) {
   const player = array[0];
   const enemy = array[1];
-  enemy.health -= player.cast(skill, dmgNum, resourceCost)[0];
+  enemy.health -= player.cast(skillName, dmgNum, resourceCost)[0];
   player.health -= enemy.attack(8);
-  // if (player.health <= 0) {
-
-  // }
-  if (enemy.health <= 0) {
-    enemyUpdate(array);
-    victoryEvent();
-    array.pop();
+  if (player.health <= 0) {
+    defeatEvent(array);
   } else {
-    enemyUpdate(array);
-    playerUpdate(array);
+    if (enemy.health <= 0) {
+      enemyUpdate(array);
+      victoryEvent();
+      array.pop();
+    } else {
+      enemyUpdate(array);
+      playerUpdate(array);
+    }
   }
 }
 
@@ -83,17 +40,27 @@ function victoryEvent() {
   console.log("You Win!");
 }
 
-function createSkill(name, array, dmgNum, resourceCost) {
+function defeatEvent(array) {
+  array.length = 0;
+  console.log(array);
+  document.getElementById("monster-info").classList.add("hidden");
+  document.getElementById("monster-spawn").classList.add("hidden");
+  document.getElementById("char-info").classList.add("hidden");
+  document.getElementById("control-buttons").classList.add("hidden");
+  document.getElementById("char-select").classList.remove("hidden");
+}
+
+function createSkill(skillName, array, dmgNum, resourceCost) {
   const skillButton = document.createElement("button");
   skillButton.addEventListener("click", () => {
     if (array.length != 1) {
-      combat(array, name, dmgNum, resourceCost);
+      combat(array, skillName, dmgNum, resourceCost);
     } else {
       return;
     }
   });
-  skillButton.id = `${name}`;
-  skillButton.append(`${name}`);
+  skillButton.id = `${skillName}`;
+  skillButton.append(`${skillName}`);
   document.getElementById("class-ability-list").append(skillButton);
   return skillButton;
 }
