@@ -1,8 +1,6 @@
 import "./css/styles.css";
-import { mage } from "./js/CharList";
-import { fighter } from "./js/CharList";
-import { monster } from "./js/CharList";
-import { combat } from "./js/GameController";
+import { mage, fighter, monster } from "./js/CharList";
+import { combat, lvlUp } from "./js/GameController";
 
 // Functions that control Ui elements on game start or combat start
 function controlPlayerUiEle() {
@@ -44,6 +42,7 @@ function onVictoryOrDefeat(array) {
     if (array[1].health <= 0) {
       enemyUpdate(array);
       victoryEvent();
+      lvlUp();
       array.pop();
     } else {
       enemyUpdate(array);
@@ -80,6 +79,11 @@ function playerUpdate(array) {
   const player = array[0];
   document.getElementById("char-name").innerText = `${player.name}`;
   document.getElementById("char-hp").innerText = `Hp: ${player.health}`;
+  document.getElementById("char-lvl").innerText = `Lvl: ${player.lvl}`
+  document.getElementById("char-exp").innerText = `Exp: ${player.exp}`
+  document.getElementById("char-int").innerText = `Intelligence: ${player.int}`
+  document.getElementById("char-str").innerText = `Strength: ${player.str}`
+  document.getElementById("char-end").innerText = `Endurance: ${player.end}`
   if (player.name == "Mage") {
     document.getElementById("char-resource").innerText = `Mana: ${player.mana}`;
   } else {
@@ -106,7 +110,7 @@ window.onload = function() {
   };
 
   document.getElementById("monster-spawn").onclick = function() {
-    const newMonster = monster("Giant Enemy Spider", 40);
+    const newMonster = monster("Giant Enemy Spider", 40, 10);
     objArray.push(newMonster);
     controlMonsterUiEle();
     document.getElementById("monster-name").innerText = `${newMonster.name}`;
