@@ -22,6 +22,15 @@ describe('fighter', () => {
       lvl: 1
     }));
   });
+
+  test('Should return int, str, and end values', () => {
+    const result = fighter("result");
+    expect(result).toEqual(expect.objectContaining({
+      int: 1,
+      str: 5,
+      end: 3
+    }));
+  });
 });
 
 describe('canFight', () => {
@@ -50,6 +59,15 @@ describe('mage', () => {
     expect(result).toEqual(expect.objectContaining({
       exp: 0,
       lvl: 1
+    }));
+  });
+
+  test('Should return int, str, and end values', () => {
+    const result = mage("result");
+    expect(result).toEqual(expect.objectContaining({
+      int: 5,
+      str: 1,
+      end: 2
     }));
   });
 });
