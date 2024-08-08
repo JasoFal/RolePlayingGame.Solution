@@ -23,7 +23,9 @@ export const fighter = (name) => {
   let state = {
     name,
     health: 100,
-    stamina: 100
+    stamina: 100,
+    lvl: 1,
+    exp: 0
   };
   return Object.assign(state, canFight(state));
 };
@@ -32,15 +34,18 @@ export const mage = (name) => {
   let state = {
     name,
     health: 100,
-    mana: 100
+    mana: 100,
+    lvl: 1,
+    exp: 0
   };
   return Object.assign(state, canCast(state));
 };
 
-export const monster = (name, hp) => {
+export const monster = (name, hp, exp) => {
   let state = {
     name,
-    health: hp
+    health: hp,
+    expValue: exp
   };
   return Object.assign(state, monsterAttack(state));
 };

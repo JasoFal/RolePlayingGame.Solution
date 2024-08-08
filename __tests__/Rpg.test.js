@@ -14,6 +14,14 @@ describe('fighter', () => {
     }));
     expect(typeof result.fight).toBe("function");
   });
+
+  test('Should return exp and lvl values', () => {
+    const result = fighter("result");
+    expect(result).toEqual(expect.objectContaining({
+      exp: 0,
+      lvl: 1
+    }));
+  });
 });
 
 describe('canFight', () => {
@@ -36,6 +44,14 @@ describe('mage', () => {
     }));
     expect(typeof result.cast).toBe("function");
   });
+
+  test('Should return exp and lvl values', () => {
+    const result = mage("result");
+    expect(result).toEqual(expect.objectContaining({
+      exp: 0,
+      lvl: 1
+    }));
+  });
 });
 
 describe('canCast', () => {
@@ -57,13 +73,12 @@ describe('canCast', () => {
 describe('monster', () => {
   
   test('Should return a monster object when called', () => {
-    const result = monster("result", 40);
-
-    console.log(result);
+    const result = monster("result", 40, 10);
 
     expect(result).toEqual(expect.objectContaining({
       name: "result",
-      health: 40
+      health: 40,
+      expValue: 10
     }));
     expect(typeof result.attack).toBe("function");
   });
