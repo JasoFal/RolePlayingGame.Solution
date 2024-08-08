@@ -2,17 +2,46 @@ import "./css/styles.css";
 import { mage } from "./js/CharList";
 import { fighter } from "./js/CharList";
 import { monster } from "./js/CharList";
+import { combat } from "./js/GameController";
 
-// All combat turns go through here
-function combat(array, skillName, dmgNum, resourceCost) {
-  const player = array[0];
-  const enemy = array[1];
-  enemy.health -= player.cast(skillName, dmgNum, resourceCost)[0];
-  player.health -= enemy.attack(8);
-  if (player.health <= 0) {
+// Functions that control Ui elements on game start or combat start
+function controlPlayerUiEle() {
+  document.getElementById("char-info").classList.remove("hidden");
+  document.getElementById("control-buttons").classList.remove("hidden");
+  document.getElementById("char-select").classList.add("hidden");
+  document.getElementById("monster-spawn").classList.remove("hidden");
+}
+
+function controlMonsterUiEle() {
+  document.getElementById("monster-info").classList.remove("hidden");
+  document.getElementById("monster-spawn").classList.add("hidden");
+}
+
+// Functions controlling Ui elements on victory or defeat
+function victoryEvent() {
+  document.getElementById("monster-info").classList.add("hidden");
+  document.getElementById("monster-spawn").classList.remove("hidden");
+  console.log("You Win!");
+}
+
+function defeatEvent(array) {
+  array.length = 0;
+  document.getElementById("monster-info").classList.add("hidden");
+  document.getElementById("monster-spawn").classList.add("hidden");
+  document.getElementById("char-info").classList.add("hidden");
+  document.getElementById("control-buttons").classList.add("hidden");
+  document.getElementById("char-select").classList.remove("hidden");
+  const skillList = document.getElementById("class-ability-list");
+  while (skillList.firstChild) {
+    skillList.removeChild(skillList.lastChild);
+  }
+}
+
+function onVictoryOrDefeat(array) {
+  if (array[0].health <= 0) {
     defeatEvent(array);
   } else {
-    if (enemy.health <= 0) {
+    if (array[1].health <= 0) {
       enemyUpdate(array);
       victoryEvent();
       array.pop();
@@ -23,38 +52,13 @@ function combat(array, skillName, dmgNum, resourceCost) {
   }
 }
 
-function controlPlayerUiEle() {
-  document.getElementById("char-info").classList.remove("hidden");
-  document.getElementById("control-buttons").classList.remove("hidden");
-  document.getElementById("char-select").classList.add("hidden");
-}
-
-function controlMonsterUiEle() {
-  document.getElementById("monster-info").classList.remove("hidden");
-  document.getElementById("monster-spawn").classList.add("hidden");
-}
-
-function victoryEvent() {
-  document.getElementById("monster-info").classList.add("hidden");
-  document.getElementById("monster-spawn").classList.remove("hidden");
-  console.log("You Win!");
-}
-
-function defeatEvent(array) {
-  array.length = 0;
-  console.log(array);
-  document.getElementById("monster-info").classList.add("hidden");
-  document.getElementById("monster-spawn").classList.add("hidden");
-  document.getElementById("char-info").classList.add("hidden");
-  document.getElementById("control-buttons").classList.add("hidden");
-  document.getElementById("char-select").classList.remove("hidden");
-}
-
+// Creates skill buttons
 function createSkill(skillName, array, dmgNum, resourceCost) {
   const skillButton = document.createElement("button");
   skillButton.addEventListener("click", () => {
     if (array.length != 1) {
       combat(array, skillName, dmgNum, resourceCost);
+      onVictoryOrDefeat(array);
     } else {
       return;
     }
@@ -65,6 +69,7 @@ function createSkill(skillName, array, dmgNum, resourceCost) {
   return skillButton;
 }
 
+// Updates Ui elements during combat
 function enemyUpdate(array) {
   const enemy = array[1];
   document.getElementById("monster-name").innerText = `${enemy.name}`;
