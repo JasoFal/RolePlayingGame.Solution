@@ -1,6 +1,5 @@
-import { combat } from "../src/js/GameController";
-import { mage } from "../src/js/CharList";
-import { monster } from "../src/js/CharList";
+import { combat, lvlUp } from "../src/js/GameController";
+import { fighter, mage, monster } from "../src/js/CharList";
 
 describe('combat', () => {
   let testArray;
@@ -19,4 +18,23 @@ describe('combat', () => {
   test('Decreases player health based on monster attack', () => {
     expect(testArray[0].health).toEqual(92);
   });
+});
+
+describe('lvlUp', () => {
+  let testArray;
+
+  beforeEach(() => {
+    const testMage = mage("test");
+    const testMonster = monster("test2", 40, 5);
+    testArray = [testMage, testMonster];
+  });
+
+  test('Increases player lvl and decreases exp if exp is over exp cap', () => {
+    const player = testArray[0]
+    player.exp = 100;
+    console.log(testArray[0].exp);
+    lvlUp(testArray);
+    expect(player.lvl).toEqual(2);
+    expect(player.exp).toEqual(0);
+  }); 
 });
