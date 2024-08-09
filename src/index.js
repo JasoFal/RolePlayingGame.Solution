@@ -40,9 +40,10 @@ function onVictoryOrDefeat(array) {
     defeatEvent(array);
   } else {
     if (array[1].health <= 0) {
+      lvlUp(array);
+      playerUpdate(array);
       enemyUpdate(array);
       victoryEvent();
-      lvlUp();
       array.pop();
     } else {
       enemyUpdate(array);
@@ -79,11 +80,11 @@ function playerUpdate(array) {
   const player = array[0];
   document.getElementById("char-name").innerText = `${player.name}`;
   document.getElementById("char-hp").innerText = `Hp: ${player.health}`;
-  document.getElementById("char-lvl").innerText = `Lvl: ${player.lvl}`
-  document.getElementById("char-exp").innerText = `Exp: ${player.exp}`
-  document.getElementById("char-int").innerText = `Intelligence: ${player.int}`
-  document.getElementById("char-str").innerText = `Strength: ${player.str}`
-  document.getElementById("char-end").innerText = `Endurance: ${player.end}`
+  document.getElementById("char-lvl").innerText = `Lvl: ${player.lvl}`;
+  document.getElementById("char-exp").innerText = `Exp: ${player.exp}`;
+  document.getElementById("char-int").innerText = `Intelligence: ${player.int}`;
+  document.getElementById("char-str").innerText = `Strength: ${player.str}`;
+  document.getElementById("char-end").innerText = `Endurance: ${player.end}`;
   if (player.name == "Mage") {
     document.getElementById("char-resource").innerText = `Mana: ${player.mana}`;
   } else {
