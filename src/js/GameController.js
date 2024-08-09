@@ -12,7 +12,7 @@ export function combat(array, skillName, dmgNum, resourceCost) {
 export function lvlUp(array) {
   const player = array[0];
   const enemy = array[1];
-  enemy.expValue += player.exp;
+  player.exp += enemy.expValue;
   if (player.exp >= 100) {
     player.exp -= 100;
     player.lvl++;

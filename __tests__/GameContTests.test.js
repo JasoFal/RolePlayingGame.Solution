@@ -25,8 +25,15 @@ describe('lvlUp', () => {
 
   beforeEach(() => {
     const testMage = mage("test");
-    const testMonster = monster("test2", 40, 5);
+    const testMonster = monster("test2", 40, 0);
     testArray = [testMage, testMonster];
+  });
+
+  test('Should return if not over exp cap', () => {
+    const player = testArray[0];
+    player.exp = 60;
+    lvlUp(testArray);
+    expect(player.lvl).toEqual(1);
   });
 
   test('Increases player lvl and decreases exp if exp is over exp cap', () => {
