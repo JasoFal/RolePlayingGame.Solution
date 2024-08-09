@@ -53,18 +53,18 @@ function onVictoryOrDefeat(array) {
 }
 
 // Creates skill buttons
-function createSkill(skillName, array, dmgNum, resourceCost) {
+function createSkill(array, skill) {
   const skillButton = document.createElement("button");
   skillButton.addEventListener("click", () => {
     if (array.length != 1) {
-      combat(array, skillName, dmgNum, resourceCost);
+      combat(array, skill);
       onVictoryOrDefeat(array);
     } else {
       return;
     }
   });
-  skillButton.id = `${skillName}`;
-  skillButton.append(`${skillName}`);
+  skillButton.id = `${skill.nameId}`;
+  skillButton.append(`${skill.namePlayer}`);
   document.getElementById("class-ability-list").append(skillButton);
   return skillButton;
 }
@@ -100,7 +100,7 @@ window.onload = function() {
     objArray.push(newMage);
     controlPlayerUiEle();
     playerUpdate(objArray);
-    createSkill("fireball", objArray, 15, 10);
+    createSkill(objArray, newMage.fireBolt);
   };
 
   document.getElementById("fighter-select").onclick = function() {

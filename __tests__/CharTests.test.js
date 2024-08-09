@@ -9,10 +9,10 @@ describe('fighter', () => {
     
     expect(result).toEqual(expect.objectContaining({
       name: "result",
+      class: "fighter",
       health: 100,
       stamina: 100
     }));
-    expect(typeof result.fight).toBe("function");
   });
 
   test('Should return exp and lvl values', () => {
@@ -33,25 +33,16 @@ describe('fighter', () => {
   });
 });
 
-describe('canFight', () => {
-  test('Should decrease fighter stamina by one and return dmgNumber', () => {
-    const fighterTest = fighter("Test");
-    fighterTest.fight(5);
-    expect(fighterTest.stamina).toEqual(99);
-    expect(fighterTest.fight(5)).toEqual(5);
-  });
-});
-
 describe('mage', () => {
   test('Should return a mage object state when called', () => {
     const result = mage("result");
 
     expect(result).toEqual(expect.objectContaining({
       name: "result",
+      class: "mage",
       health: 100,
       mana: 100
     }));
-    expect(typeof result.cast).toBe("function");
   });
 
   test('Should return exp and lvl values', () => {
@@ -69,22 +60,6 @@ describe('mage', () => {
       str: 1,
       end: 2
     }));
-  });
-});
-
-describe('canCast', () => {
-
-  test('Should subtract spell cost from mana', () => {
-    const mageTest = mage("mageTest");
-    mageTest.cast("Fireball", 15, 10);
-    expect(mageTest.mana).toEqual(90);
-  });
-
-  test('Should return array with dmgNum and string', () => {
-    const mageTest = mage("mageTest");
-    const result = mageTest.cast("Fireball", 15);
-    expect(result[0]).toEqual(15);
-    expect(typeof result[1]).toEqual("string");
   });
 });
 
