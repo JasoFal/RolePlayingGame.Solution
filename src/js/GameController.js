@@ -1,10 +1,11 @@
 import { mageLvlPath, fighterLvlPath } from "./CharLvlPath";
 
 // All combat turns go through here
-export function combat(array, skillName, dmgNum, resourceCost) {
+export function combat(array, skill) {
   const player = array[0];
   const enemy = array[1];
-  enemy.health -= player.cast(skillName, dmgNum, resourceCost)[0];
+  enemy.health -= skill.damage;
+  charResourceCost(player, skill);
   player.health -= enemy.attack(8);
 }
 
@@ -16,12 +17,20 @@ export function lvlUp(array) {
   if (player.exp >= 100) {
     player.exp -= 100;
     player.lvl++;
-    if (player.name == "Mage") {
+    if (player.class == "mage") {
       mageLvlPath(player);
-    } else if (player.name == "Fighter") {
+    } else if (player.class == "fighter") {
       fighterLvlPath(player);
     }
   } else {
     return;
+  }
+}
+
+function charResourceCost(char, skill) {
+  if (char.class == "mage") {
+    char.mana -= skill.manaCost;
+  } else if (char.class == "fighter") {
+    char.stamina -= skill.staminaCost;
   }
 }

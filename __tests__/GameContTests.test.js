@@ -8,11 +8,11 @@ describe('combat', () => {
     const testMage = mage("test");
     const testMonster = monster("test2", 40, 5);
     testArray = [testMage, testMonster];
-    combat(testArray, "fireball", 15, 10);
+    combat(testArray, testMage.fireBolt);
   });
 
   test('Decreases monster health based on spell cast', () => {
-    expect(testArray[1].health).toEqual(25);
+    expect(testArray[1].health).toEqual(28);
   });
 
   test('Decreases player health based on monster attack', () => {
@@ -21,15 +21,10 @@ describe('combat', () => {
 });
 
 describe('lvlUp', () => {
-  let testArray;
-
-  beforeEach(() => {
+  test('Should return if not over exp cap', () => {
     const testMage = mage("test");
     const testMonster = monster("test2", 40, 0);
     testArray = [testMage, testMonster];
-  });
-
-  test('Should return if not over exp cap', () => {
     const player = testArray[0];
     player.exp = 60;
     lvlUp(testArray);
@@ -37,11 +32,33 @@ describe('lvlUp', () => {
   });
 
   test('Increases player lvl and decreases exp if exp is over exp cap', () => {
+    const testMage = mage("test");
+    const testMonster = monster("test2", 40, 0);
+    testArray = [testMage, testMonster];
     const player = testArray[0]
     player.exp = 100;
-    console.log(testArray[0].exp);
     lvlUp(testArray);
     expect(player.lvl).toEqual(2);
     expect(player.exp).toEqual(0);
   }); 
+
+  test('If player is a mage follow mage level up path', () => {
+    const testMage = mage("test");
+    const testMonster = monster("test2", 40, 0);
+    testArray = [testMage, testMonster];
+    const player = testArray[0]
+    player.exp = 100;
+    lvlUp(testArray);
+    expect(player.int).toEqual(7);
+  });
+
+  test('If player is a fighter follow fighter level up path', () => {
+    const testFighter = fighter("test");
+    const testMonster = monster("test2", 40, 0);
+    testArray = [testFighter, testMonster];
+    const player = testArray[0]
+    player.exp = 100;
+    lvlUp(testArray);
+    expect(player.str).toEqual(7);
+  });
 });
