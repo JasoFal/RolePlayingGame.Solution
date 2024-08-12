@@ -1,6 +1,6 @@
 import "./css/styles.css";
-import { mage, fighter, monster } from "./js/CharList";
-import { combat, lvlUp } from "./js/GameController";
+import { mage, fighter, monster } from "./js/charList";
+import { combat, lvlUp } from "./js/gameController";
 
 // Functions that control Ui elements on game start or combat start
 function controlPlayerUiEle() {
@@ -40,7 +40,11 @@ function onVictoryOrDefeat(array) {
     defeatEvent(array);
   } else {
     if (array[1].health <= 0) {
+      let lastLvl = array[0].lvl;
       lvlUp(array);
+      if (lastLvl < array[0].lvl) {
+        createSkillButtons(array);
+      }
       playerUpdate(array);
       enemyUpdate(array);
       victoryEvent();
@@ -67,6 +71,22 @@ function createSkill(array, skill) {
   skillButton.append(`${skill.namePlayer}`);
   document.getElementById("class-ability-list").append(skillButton);
   return skillButton;
+}
+
+function createSkillButtons(array) {
+  const skillList = document.getElementById("class-ability-list");
+  while (skillList.firstChild) {
+    skillList.removeChild(skillList.lastChild);
+  }
+  if (array[0].class == "mage") {
+    createSkill(array, array[0].fireBolt);
+    createSkill(array, array[0].castBarrier);
+    createSkill(array, array[0].meditate);
+  } else if (array[0].class == "fighter") {
+    createSkill(array, array[0].quickSlash);
+    createSkill(array, array[0].shield);
+    createSkill(array, array[0].rest);
+  }
 }
 
 // Updates Ui elements during combat
@@ -100,7 +120,8 @@ window.onload = function() {
     objArray.push(newMage);
     controlPlayerUiEle();
     playerUpdate(objArray);
-    createSkill(objArray, newMage.fireBolt);
+    createSkillButtons(objArray);
+    console.log(newMage);
   };
 
   document.getElementById("fighter-select").onclick = function() {
@@ -108,6 +129,7 @@ window.onload = function() {
     objArray.push(newFighter);
     controlPlayerUiEle();
     playerUpdate(objArray);
+    createSkillButtons(objArray);
   };
 
   document.getElementById("monster-spawn").onclick = function() {
