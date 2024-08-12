@@ -1,6 +1,7 @@
 import "./css/styles.css";
 import { mage, fighter, monster } from "./js/charList";
 import { combat, lvlUp } from "./js/gameController";
+import GameBoard from "./js/gameSave";
 
 // Functions that control Ui elements on game start or combat start
 function controlPlayerUiEle() {
@@ -22,8 +23,9 @@ function victoryEvent() {
   console.log("You Win!");
 }
 
-function defeatEvent(array) {
-  array.length = 0;
+function defeatEvent(gameState) {
+  gameState.playerArray.length = 0;
+  gameState.enemyArray.length = 0;
   document.getElementById("monster-info").classList.add("hidden");
   document.getElementById("monster-spawn").classList.add("hidden");
   document.getElementById("char-info").classList.add("hidden");
@@ -35,34 +37,39 @@ function defeatEvent(array) {
   }
 }
 
-function onVictoryOrDefeat(array) {
-  if (array[0].health <= 0) {
-    defeatEvent(array);
+function onVictoryOrDefeat(gameState) {
+  const player = gameState.playerArray[0];
+  const enemy = gameState.enemyArray;
+  if (player.health <= 0) {
+    defeatEvent(gameState);
   } else {
-    if (array[1].health <= 0) {
-      let lastLvl = array[0].lvl;
-      lvlUp(array);
-      if (lastLvl < array[0].lvl) {
-        createSkillButtons(array);
+    enemy.forEach(element => {
+      console.log(element);
+      if (element.health <= 0) {
+        let lastLvl = player.lvl;
+        lvlUp(player, element);
+        if (lastLvl < player.lvl) {
+          createSkillButtons(gameState);
+        }
+        playerUpdate(player);
+        enemyUpdate(element);
+        victoryEvent();
+        enemy.splice(element);
+      } else {
+        enemyUpdate(element);
+        playerUpdate(player);
       }
-      playerUpdate(array);
-      enemyUpdate(array);
-      victoryEvent();
-      array.pop();
-    } else {
-      enemyUpdate(array);
-      playerUpdate(array);
-    }
+    });
   }
 }
 
 // Creates skill buttons
-function createSkill(array, skill) {
+function createSkill(gameState, skill) {
   const skillButton = document.createElement("button");
   skillButton.addEventListener("click", () => {
-    if (array.length != 1) {
-      combat(array, skill);
-      onVictoryOrDefeat(array);
+    if (gameState.enemyArray.length >= 1) {
+      combat(gameState, skill);
+      onVictoryOrDefeat(gameState);
     } else {
       return;
     }
@@ -73,31 +80,30 @@ function createSkill(array, skill) {
   return skillButton;
 }
 
-function createSkillButtons(array) {
+function createSkillButtons(gameState) {
+  const player = gameState.playerArray[0];
   const skillList = document.getElementById("class-ability-list");
   while (skillList.firstChild) {
     skillList.removeChild(skillList.lastChild);
   }
-  if (array[0].class == "mage") {
-    createSkill(array, array[0].fireBolt);
-    createSkill(array, array[0].castBarrier);
-    createSkill(array, array[0].meditate);
-  } else if (array[0].class == "fighter") {
-    createSkill(array, array[0].quickSlash);
-    createSkill(array, array[0].shield);
-    createSkill(array, array[0].rest);
+  if (player.class == "mage") {
+    createSkill(gameState, player.fireBolt);
+    createSkill(gameState, player.castBarrier);
+    createSkill(gameState, player.meditate);
+  } else if (player.class == "fighter") {
+    createSkill(gameState, player.quickSlash);
+    createSkill(gameState, player.shield);
+    createSkill(gameState, player.rest);
   }
 }
 
 // Updates Ui elements during combat
-function enemyUpdate(array) {
-  const enemy = array[1];
+function enemyUpdate(enemy) {
   document.getElementById("monster-name").innerText = `${enemy.name}`;
   document.getElementById("monster-hp").innerText = `Hp: ${enemy.health}`;
 }
 
-function playerUpdate(array) {
-  const player = array[0];
+function playerUpdate(player) {
   document.getElementById("char-name").innerText = `${player.name}`;
   document.getElementById("char-hp").innerText = `Hp: ${player.health}`;
   document.getElementById("char-lvl").innerText = `Lvl: ${player.lvl}`;
@@ -113,28 +119,28 @@ function playerUpdate(array) {
 }
 
 window.onload = function() {
-  let objArray = [];
+  const gameBoard = new GameBoard();
 
   document.getElementById("mage-select").onclick = function() {
     const newMage = mage("Mage");
-    objArray.push(newMage);
+    gameBoard.playerArray.push(newMage);
     controlPlayerUiEle();
-    playerUpdate(objArray);
-    createSkillButtons(objArray);
+    playerUpdate(newMage);
+    createSkillButtons(gameBoard);
     console.log(newMage);
   };
 
   document.getElementById("fighter-select").onclick = function() {
     const newFighter = fighter("Fighter");
-    objArray.push(newFighter);
+    gameBoard.playerArray.push(newFighter);
     controlPlayerUiEle();
-    playerUpdate(objArray);
-    createSkillButtons(objArray);
+    playerUpdate(newFighter);
+    createSkillButtons(gameBoard);
   };
 
   document.getElementById("monster-spawn").onclick = function() {
     const newMonster = monster("Giant Enemy Spider", 40, 10);
-    objArray.push(newMonster);
+    gameBoard.enemyArray.push(newMonster);
     controlMonsterUiEle();
     document.getElementById("monster-name").innerText = `${newMonster.name}`;
     document.getElementById("monster-hp").innerText = `Hp: ${newMonster.health}`;
