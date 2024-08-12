@@ -1,5 +1,5 @@
-import { combat, lvlUp } from "../src/js/GameController";
-import { fighter, mage, monster } from "../src/js/CharList";
+import { combat, lvlUp } from "../src/js/gameController";
+import { fighter, mage, monster } from "../src/js/charList";
 
 describe('combat', () => {
   let testArray;
@@ -24,7 +24,7 @@ describe('lvlUp', () => {
   test('Should return if not over exp cap', () => {
     const testMage = mage("test");
     const testMonster = monster("test2", 40, 0);
-    testArray = [testMage, testMonster];
+    let testArray = [testMage, testMonster];
     const player = testArray[0];
     player.exp = 60;
     lvlUp(testArray);
@@ -34,7 +34,7 @@ describe('lvlUp', () => {
   test('Increases player lvl and decreases exp if exp is over exp cap', () => {
     const testMage = mage("test");
     const testMonster = monster("test2", 40, 0);
-    testArray = [testMage, testMonster];
+    let testArray = [testMage, testMonster];
     const player = testArray[0]
     player.exp = 100;
     lvlUp(testArray);
@@ -45,7 +45,7 @@ describe('lvlUp', () => {
   test('If player is a mage follow mage level up path', () => {
     const testMage = mage("test");
     const testMonster = monster("test2", 40, 0);
-    testArray = [testMage, testMonster];
+    let testArray = [testMage, testMonster];
     const player = testArray[0]
     player.exp = 100;
     lvlUp(testArray);
@@ -55,7 +55,7 @@ describe('lvlUp', () => {
   test('If player is a fighter follow fighter level up path', () => {
     const testFighter = fighter("test");
     const testMonster = monster("test2", 40, 0);
-    testArray = [testFighter, testMonster];
+    let testArray = [testFighter, testMonster];
     const player = testArray[0]
     player.exp = 100;
     lvlUp(testArray);

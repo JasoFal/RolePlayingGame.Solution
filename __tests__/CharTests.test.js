@@ -1,6 +1,6 @@
-import { mage } from "../src/js/CharList.js";
-import { fighter } from "../src/js/CharList.js";
-import { monster } from "../src/js/CharList.js";
+import { mage } from "../src/js/charList.js";
+import { fighter } from "../src/js/charList.js";
+import { monster } from "../src/js/charList.js";
 
 describe('fighter', () => {
   

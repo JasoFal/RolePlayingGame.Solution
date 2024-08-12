@@ -1,5 +1,5 @@
-import { mageLvlPath, fighterLvlPath } from "../src/js/CharLvlPath";
-import { mage, fighter } from "../src/js/CharList";
+import { mageLvlPath, fighterLvlPath } from "../src/js/charLvlPath";
+import { mage, fighter } from "../src/js/charList";
 
 describe('mageLvlPath', () => {
   test('Should increase mage stats if lvl up between lvl 1 and 100', () => {
