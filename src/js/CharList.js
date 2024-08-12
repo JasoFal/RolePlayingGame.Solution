@@ -112,7 +112,7 @@ export const fighterSkillList = (state) => {
       buffAmount: 0
     },
 
-    shield: {
+    raiseShield: {
       namePlayer: "Shield",
       nameFunction: "shield",
       nameId: "#shield",

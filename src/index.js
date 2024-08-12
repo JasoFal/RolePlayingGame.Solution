@@ -92,7 +92,7 @@ function createSkillButtons(gameState) {
     createSkill(gameState, player.meditate);
   } else if (player.class == "fighter") {
     createSkill(gameState, player.quickSlash);
-    createSkill(gameState, player.shield);
+    createSkill(gameState, player.raiseShield);
     createSkill(gameState, player.rest);
   }
 }
@@ -113,8 +113,10 @@ function playerUpdate(player) {
   document.getElementById("char-end").innerText = `Endurance: ${player.end}`;
   if (player.name == "Mage") {
     document.getElementById("char-resource").innerText = `Mana: ${player.mana}`;
+    document.getElementById("char-def").innerText = `Barrier: ${player.barrier}`;
   } else {
     document.getElementById("char-resource").innerText = `Stam: ${player.stamina}`;
+    document.getElementById("char-def").innerText = `Shield: ${player.shield}`;
   }
 }
 
