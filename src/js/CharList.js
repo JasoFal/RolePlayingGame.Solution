@@ -18,11 +18,12 @@ export const fighter = (name) => {
     name,
     class: "fighter",
     stamina: 100,
+    shield: 0,
     int: 1,
     str: 5,
     end: 3
   };
-  return Object.assign(state, baseChar());
+  return Object.assign(state, fighterSkillList(state), baseChar());
 };
 
 export const mage = (name) => {
@@ -30,6 +31,7 @@ export const mage = (name) => {
     name,
     class: "mage",
     mana: 100,
+    barrier: 0,
     int: 5,
     str: 1,
     end: 2
@@ -46,7 +48,7 @@ export const monster = (name, hp, exp) => {
   return Object.assign(state, monsterAttack());
 };
 
-const mageSpellList = (state) => {
+export const mageSpellList = (state) => {
   const mageSpells = {
 
     fireBolt: {
@@ -62,6 +64,79 @@ const mageSpellList = (state) => {
       buffName: 0,
       buffAmount: 0
     },
+
+    castBarrier: {
+      namePlayer: "Barrier",
+      nameFunction: "barrier",
+      nameId: "#barrier",
+      damage: 0,
+      manaCost: 20,
+      healthCost: 0,
+      staminaRestore: 0,
+      healthRestore: 0,
+      buffName: "buffDodge",
+      buffAmount: Math.floor(40/2 + state.int),
+    },
+
+    meditate: {
+      namePlayer: "Meditate",
+      nameFunction: "meditate",
+      nameId: "#meditate",
+      damage: 0,
+      manaCost: 0,
+      healthCost: 0,
+      manaRestore: Math.floor(30/2 + state.int),
+      healthRestore: 0,
+      buffName: 0,
+      buffAmount: 0
+    }
   };
   return mageSpells;
+};
+
+export const fighterSkillList = (state) => {
+  console.log(state);
+  const fighterSkills = {
+
+    quickSlash: {
+      namePlayer: "Quick Slash",
+      nameFunction: "quickslash",
+      nameId: "#quickslash",
+      damage: Math.floor(15/2 + state.str),
+      staminaCost: 10,
+      damageType: "physical",
+      healthCost: 0,
+      staminaRestore: 0,
+      healthRestore: 0,
+      buffName: 0,
+      buffAmount: 0
+    },
+
+    shield: {
+      namePlayer: "Shield",
+      nameFunction: "shield",
+      nameId: "#shield",
+      damage: 0,
+      staminaCost: 20,
+      healthCost: 0,
+      staminaRestore: 0,
+      healthRestore: 0,
+      buffName: "buffDodge",
+      buffAmount: Math.floor(40/2 + state.str),
+    },
+
+    rest: {
+      namePlayer: "Rest",
+      nameFunction: "rest",
+      nameId: "#rest",
+      damage: 0,
+      staminaCost: 0,
+      healthCost: 0,
+      staminaRestore: Math.floor(30/2 + state.end),
+      healthRestore: 0,
+      buffName: 0,
+      buffAmount: 0
+    }
+  };
+  return fighterSkills;
 };
