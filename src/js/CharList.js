@@ -1,9 +1,3 @@
-const monsterAttack = () => ({
-  attack: (dmg) => {
-    return dmg;
-  }
-});
-
 const baseChar = () => {
   let baseState = {
     health: 100,
@@ -39,15 +33,6 @@ export const mage = (name) => {
   return Object.assign(state, mageSpellList(state), baseChar());
 };
 
-export const monster = (name, hp, exp) => {
-  let state = {
-    name,
-    health: hp,
-    expValue: exp
-  };
-  return Object.assign(state, monsterAttack());
-};
-
 export const mageSpellList = (state) => {
   const mageSpells = {
 
@@ -72,9 +57,9 @@ export const mageSpellList = (state) => {
       damage: 0,
       manaCost: 20,
       healthCost: 0,
-      staminaRestore: 0,
+      manaRestore: 0,
       healthRestore: 0,
-      buffName: "buffDodge",
+      buffName: "buffBarrier",
       buffAmount: Math.floor(40/2 + state.int),
     },
 
@@ -121,7 +106,7 @@ export const fighterSkillList = (state) => {
       healthCost: 0,
       staminaRestore: 0,
       healthRestore: 0,
-      buffName: "buffDodge",
+      buffName: "buffShield",
       buffAmount: Math.floor(40/2 + state.str),
     },
 
