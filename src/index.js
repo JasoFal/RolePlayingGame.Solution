@@ -1,7 +1,8 @@
 import "./css/styles.css";
-import { mage, fighter, monster } from "./js/charList";
+import { mage, fighter } from "./js/charList";
 import { combat, lvlUp } from "./js/gameController";
 import GameBoard from "./js/gameSave";
+import { monster } from "./js/monsterList";
 
 // Functions that control Ui elements on game start or combat start
 function controlPlayerUiEle() {
