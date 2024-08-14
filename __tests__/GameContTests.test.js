@@ -1,22 +1,25 @@
 import { combat, lvlUp } from "../src/js/gameController";
-import { fighter, mage, monster } from "../src/js/charList";
+import { fighter, mage } from "../src/js/charList";
+import GameBoard from "../src/js/gameSave";
+import { monster } from "../src/js/monsterList";
 
 describe('combat', () => {
-  let testArray;
+  const testObject = new GameBoard();
 
   beforeEach(() => {
     const testMage = mage("test");
     const testMonster = monster("test2", 40, 5);
-    testArray = [testMage, testMonster];
-    combat(testArray, testMage.fireBolt);
+    testObject.playerArray.push(testMage);
+    testObject.enemyArray.push(testMonster);
+    combat(testObject, testMage.fireBolt);
   });
 
   test('Decreases monster health based on spell cast', () => {
-    expect(testArray[1].health).toEqual(28);
+    expect(testObject.enemyArray[0].health).toEqual(28);
   });
 
   test('Decreases player health based on monster attack', () => {
-    expect(testArray[0].health).toEqual(92);
+    expect(testObject.playerArray[0].health).toEqual(92);
   });
 });
 
@@ -24,41 +27,45 @@ describe('lvlUp', () => {
   test('Should return if not over exp cap', () => {
     const testMage = mage("test");
     const testMonster = monster("test2", 40, 0);
-    let testArray = [testMage, testMonster];
-    const player = testArray[0];
-    player.exp = 60;
-    lvlUp(testArray);
-    expect(player.lvl).toEqual(1);
+    const testObject = new GameBoard();
+    testObject.playerArray.push(testMage);
+    testObject.enemyArray.push(testMonster);
+    testMage.exp = 60;
+    lvlUp(testMage, testMonster);
+    expect(testMage.lvl).toEqual(1);
   });
 
   test('Increases player lvl and decreases exp if exp is over exp cap', () => {
     const testMage = mage("test");
     const testMonster = monster("test2", 40, 0);
-    let testArray = [testMage, testMonster];
-    const player = testArray[0]
-    player.exp = 100;
-    lvlUp(testArray);
-    expect(player.lvl).toEqual(2);
-    expect(player.exp).toEqual(0);
+    const testObject = new GameBoard();
+    testObject.playerArray.push(testMage);
+    testObject.enemyArray.push(testMonster);
+    testMage.exp = 100;
+    lvlUp(testMage, testMonster);
+    expect(testMage.lvl).toEqual(2);
+    expect(testMage.exp).toEqual(0);
   }); 
 
   test('If player is a mage follow mage level up path', () => {
     const testMage = mage("test");
     const testMonster = monster("test2", 40, 0);
-    let testArray = [testMage, testMonster];
-    const player = testArray[0]
-    player.exp = 100;
-    lvlUp(testArray);
-    expect(player.int).toEqual(7);
+    const testObject = new GameBoard();
+    testObject.playerArray.push(testMage);
+    testObject.enemyArray.push(testMonster);
+    testMage.exp = 100;
+    lvlUp(testMage, testMonster);
+    expect(testMage.int).toEqual(7);
   });
 
   test('If player is a fighter follow fighter level up path', () => {
     const testFighter = fighter("test");
     const testMonster = monster("test2", 40, 0);
-    let testArray = [testFighter, testMonster];
-    const player = testArray[0]
-    player.exp = 100;
-    lvlUp(testArray);
-    expect(player.str).toEqual(7);
+    const testObject = new GameBoard();
+    testObject.playerArray.push(testFighter);
+    testObject.enemyArray.push(testMonster);
+    testFighter.exp = 100;
+    lvlUp(testFighter, testMonster);
+    expect(testFighter.str).toEqual(7);
   });
 });
