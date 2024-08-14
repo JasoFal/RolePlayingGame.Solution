@@ -38,6 +38,7 @@ export function lvlUp(player, enemy) {
 
 function charResourceCost(player, skill) {
   if (player.class == "mage") {
+    console.log(player);
     player.mana -= skill.manaCost;
   } else if (player.class == "fighter") {
     player.stamina -= skill.staminaCost;
@@ -45,10 +46,10 @@ function charResourceCost(player, skill) {
 }
 
 function enemyDamage(player, enemy) {
-  const enemyAttack = enemy.attack(8);
-  if (player.shield != 0) {
+  let enemyAttack = enemy.attack(8);
+  if (player.shield >= 0) {
     player.shield -= enemyAttack;
-  } else if (player.barrier != 0) {
+  } else if (player.barrier >= 0) {
     player.barrier -= enemyAttack;
   } else {
     player.health -= enemyAttack;
