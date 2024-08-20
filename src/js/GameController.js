@@ -47,10 +47,22 @@ function charResourceCost(player, skill) {
 
 function enemyDamage(player, enemy) {
   let enemyAttack = enemy.attack(8);
-  if (player.shield >= 0) {
-    player.shield -= enemyAttack;
-  } else if (player.barrier >= 0) {
-    player.barrier -= enemyAttack;
+  if (player.shield > 0) {
+    if (player.shield < enemyAttack) {
+      const attackDiff = enemyAttack - player.shield;
+      player.shield = 0;
+      player.health -= attackDiff;
+    } else {
+      player.shield -= enemyAttack;
+    }
+  } else if (player.barrier > 0) {
+    if (player.barrier < enemyAttack) {
+      const attackDiff = enemyAttack - player.barrier;
+      player.barrier = 0;
+      player.health -= attackDiff;
+    } else {
+      player.barrier -= enemyAttack;
+    }
   } else {
     player.health -= enemyAttack;
   }
