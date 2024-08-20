@@ -1,6 +1,7 @@
 const baseChar = () => {
   let baseState = {
     health: 100,
+    maxHealth: 100,
     lvl: 1,
     exp: 0
   };
@@ -12,6 +13,7 @@ export const fighter = (name) => {
     name,
     class: "fighter",
     stamina: 100,
+    maxStamina: 100,
     shield: 0,
     int: 1,
     str: 5,
@@ -25,6 +27,7 @@ export const mage = (name) => {
     name,
     class: "mage",
     mana: 100,
+    maxMana: 100,
     barrier: 0,
     int: 5,
     str: 1,
