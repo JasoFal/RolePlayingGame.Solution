@@ -2,7 +2,7 @@ import "./css/styles.css";
 import { mage, fighter } from "./js/charList";
 import { combat, lvlUp } from "./js/gameController";
 import GameBoard from "./js/gameSave";
-import { monster } from "./js/monsterList";
+import { enemySpawner } from "./js/monsterList";
 
 // Functions that control Ui elements on game start or combat start
 function controlPlayerUiEle() {
@@ -46,7 +46,7 @@ function onVictoryOrDefeat(gameState) {
   } else {
     enemy.forEach(element => {
       console.log(element);
-      if (element.health <= 0) {
+      if (element.hp <= 0) {
         let lastLvl = player.lvl;
         lvlUp(player, element);
         if (lastLvl < player.lvl) {
@@ -101,7 +101,8 @@ function createSkillButtons(gameState) {
 // Updates Ui elements during combat
 function enemyUpdate(enemy) {
   document.getElementById("monster-name").innerText = `${enemy.name}`;
-  document.getElementById("monster-hp").innerText = `Hp: ${enemy.health}`;
+  document.getElementById("monster-hp").innerText = `Hp: ${enemy.hp}`;
+  console.log(enemy, "enemyUpdate");
 }
 
 function playerUpdate(player) {
@@ -112,10 +113,10 @@ function playerUpdate(player) {
   document.getElementById("char-int").innerText = `Intelligence: ${player.int}`;
   document.getElementById("char-str").innerText = `Strength: ${player.str}`;
   document.getElementById("char-end").innerText = `Endurance: ${player.end}`;
-  if (player.name == "Mage") {
+  if (player.class == "mage") {
     document.getElementById("char-resource").innerText = `Mana: ${player.mana}`;
     document.getElementById("char-def").innerText = `Barrier: ${player.barrier}`;
-  } else {
+  } else if (player.class == "fighter") {
     document.getElementById("char-resource").innerText = `Stam: ${player.stamina}`;
     document.getElementById("char-def").innerText = `Shield: ${player.shield}`;
   }
@@ -142,11 +143,11 @@ window.onload = function() {
   };
 
   document.getElementById("monster-spawn").onclick = function() {
-    const newMonster = monster("Giant Enemy Spider", 40, 10);
-    gameBoard.enemyArray.push(newMonster);
+    gameBoard.enemyArray.push(enemySpawner(gameBoard.playerArray[0].lvl));
+    const enemy = gameBoard.enemyArray[0];
+    console.log(enemy);
     controlMonsterUiEle();
-    document.getElementById("monster-name").innerText = `${newMonster.name}`;
-    document.getElementById("monster-hp").innerText = `Hp: ${newMonster.health}`;
+    document.getElementById("monster-name").innerText = `${enemy.name}`;
+    document.getElementById("monster-hp").innerText = `Hp: ${enemy.hp}`;
   };
 };
-
