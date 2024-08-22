@@ -77,11 +77,11 @@ function enemyDamage(player, enemyDmg) {
   }
 }
 
-function enemyAttackChoice(enemy) {
-  if (enemy.nameFunction == "giantspider") {
-    console.log(enemy.bite);
-    return enemy.bite;
-  } else if (enemy.nameFunction == "goblin") {
-    return enemy.knifeAttack;
-  }
-}
+// function enemyAttackChoice(enemy) {
+//   if (enemy.nameFunction == "giantspider") {
+//     console.log(enemy.bite);
+//     return enemy.bite;
+//   } else if (enemy.nameFunction == "goblin") {
+//     return enemy.knifeAttack;
+//   }
+// }
